@@ -1,0 +1,32 @@
+{% extends "./base.html" %}
+
+{% block title %}
+Lista de Tarefas
+{% endblock %}
+
+{% block content %}
+        <h1> Lista de Tarefas </h1>
+
+        <form method="post" action="{% url 'store' %}">
+            {% csrf_token %}
+            <input type="text" name="todo_name" placeholder = "Nova tarefa"> 
+            <button class="btn btn-primary" > Adicionar </button>
+            <br><br>
+        </form>
+    <form method="">
+        <ul>
+            {% for todo in todos %}
+            {% if todo %}
+            <li>
+            {{todo.name}} 
+            <a href="{% url 'show' todo.id %}"><button type="button" class="btn btn-success"> Abrir </button></a>
+            <form method="post" action="{% url 'destroy' todo.id %}">
+                {% csrf_token %}
+            <button type="submit" class="btn btn-danger"> Excluir </button>
+            </form>
+            </li>
+            {% endif %}
+            {% endfor %}
+        <ul>
+    </form>
+    {% endblock %}

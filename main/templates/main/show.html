@@ -1,0 +1,35 @@
+{% extends 'main/base.html' %}
+
+{% block title %} {{name}} {% endblock %}
+<h1> {% block title_h1 %} {{name}} {% endblock %} </h1>
+
+{% block content %}
+        <a href="{% url 'index' %}"><button type="submit" class="btn btn-secondary"> Voltar </button></a>
+        <br>
+        <form method="post" action="{% url 'store-item' todo_id %}">
+            {% csrf_token %}
+            <input type="text" id="lista" name="text" placeholder = "Novo item"> 
+            <button class="btn btn-primary" > Adicionar </button>
+            <br><br>
+        </form>
+        <ul>
+            {% for item in items %}
+            <li>
+            <form method="post" action="{% url 'put-item' item.id %}"  style="display: inline;">
+                {% csrf_token %}
+                {% if item.complete %} 
+                    <button type= 'submit' class="btn btn-info"> Concluido </button>
+                {% else %}
+                    <button type= 'submit' class="btn btn-warning" > Pendente </button>
+                {% endif %}
+
+                {{ item.text }} 
+            </form>
+            <form method="post" action="{% url 'destroy-item' item.todo.id item.id %}">
+                {% csrf_token %}
+            <button type="submit" class="btn btn-danger"> Excluir </button>
+            </form>
+            </li>
+            {% endfor %}
+        <ul>
+{% endblock %}
